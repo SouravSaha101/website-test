@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-<div class="row"> 
-    <div id="nav" class="col-lg-12">
+    <div id="nav" class="">
       <!-- Navigation -->
       <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Welcome</a>
@@ -35,6 +34,15 @@
                     <span class="badge badge-success">11</span>
                   </i>
                   About Us
+                </a>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/form">
+                <a class="nav-link">
+                  <i class="fa fa-wpforms">
+                  </i>
+                  Form
                 </a>
               </router-link>
             </li>
@@ -83,15 +91,15 @@
       </nav>
       <!--/.Navbar -->
     </div>
- </div>
     <router-view />
-  </div>
+  
+</div>
 </template>
 
-<style  src="./app.css">
-</style>
+ <style  src="./app.css">
+ </style>
 
-<script lang="ts">
+ <script lang="ts"> 
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 export default {
@@ -102,4 +110,4 @@ export default {
     toggle() {},
   },
 };
-</script>
+ </script> 

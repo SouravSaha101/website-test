@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
-import About  from '../views/About.vue'
+import About from '../views/About.vue'
+import Form from '../views/Form.vue'
 // import { About } from '../views/about'
 
 Vue.use(VueRouter)
@@ -19,7 +20,12 @@ const routes: Array<RouteConfig> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: About
-  }
+  },
+  {
+    path: '/form',
+    name: 'Form',
+    component: Form
+  },
 ]
 
 const router = new VueRouter({

@@ -123,3 +123,10 @@
     }
 
 }
+
+/* COLOR BACKGROUND */
+
+.home{
+background-image: url("../assets/173854.jpg");
+height: 95%;
+}
