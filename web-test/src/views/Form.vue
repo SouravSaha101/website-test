@@ -113,11 +113,11 @@
 </template>
 
 <script>
-import { db } from '../firebase';
+import { db } from './../firebase';
 import { debounce } from 'debounce';
 import Vue from 'vue';
 
-const documentPath = 'test/Sourav';
+const documentPath = 'login-details/5xyckXTNdibafaNWAkVUkJgj5sq2';
 
 export default {
   data() {

@@ -11,7 +11,11 @@
               Sign in
             </h1>
             <div class="social-login">
-              <button class="btn google-btn social-btn" type="button" @click="googleLogin">
+              <button
+                class="btn google-btn social-btn"
+                type="button"
+                @click="googleLogin"
+              >
                 <span
                   ><i class="fab fa-google-plus-g"></i> Sign in with
                   Google</span
@@ -30,7 +34,7 @@
             />
             <input
               type="password"
-              id="inputPassword"
+              id="inputPassword3"
               class="form-control"
               placeholder="Password"
               required=""
@@ -103,23 +107,23 @@
                     placeholder="Email address"
                     required=""
                     autofocus=""
-                    v-model="signUpEmail"
+                    v-model="signUpData.email"
                   />
                   <input
                     type="password"
-                    id="inputPassword"
+                    id="inputPassword1"
                     class="form-control"
                     placeholder="Password"
                     required=""
-                    v-model="signUpPassword"
+                    v-model="signUpData.signUpPassword"
                   />
                   <input
                     type="password"
-                    id="inputPassword"
+                    id="inputPassword2"
                     class="form-control"
                     placeholder="Confirm Password"
                     required=""
-                    v-model="confirmPassword"
+                    v-model="signUpData.confirmPassword"
                   />
 
                   <button
@@ -142,15 +146,23 @@
 <script >
 import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
+import { db } from "./../firebase";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      signUpEmail: "",
-      signUpPassword: "",
-      confirmPassword: "",
+      signUpData: {
+        email: "",
+        signUpPassword: "",
+        confirmPassword: "",
+        name: "",
+        age: "",
+        isIndian: true,
+        phoneno: null,
+        uid: "",
+      },
       showSignupModal: false,
     };
   },
@@ -161,10 +173,12 @@ export default {
         await firebase
           .auth()
           .signInWithEmailAndPassword(this.email, this.password);
+        let uid = firebase.auth().currentUser.uid;
         alert("success");
-                // this.$router.push({
-                //     path: '/settlement-data-cases/:isSavedSearchRequired'
-                // });
+        this.$router.push({
+          path: "/profile/:uid",
+          query: { uid: JSON.stringify(uid) },
+        });
       } catch (error) {
         alert(error);
       }
@@ -173,7 +187,8 @@ export default {
     async signUp() {
       console.log("Sign Up");
       this.showSignupModal = false;
-      if (this.signUpPassword !== this.confirmPassword) {
+      console.log(this.signUpData);
+      if (this.signUpData.signUpPassword !== this.signUpData.confirmPassword) {
         alert("Passwords don't match");
         return;
       }
@@ -181,18 +196,21 @@ export default {
         await firebase
           .auth()
           .createUserWithEmailAndPassword(
-            this.signUpEmail,
-            this.signUpPassword
+            this.signUpData.email,
+            this.signUpData.signUpPassword
           );
         this.showSignupModal = false;
-        alert("Created")
+        let documentPath = "login-details/" + this.uid.toString();
+        const docRef = db.doc(documentPath);
+        let data = (await docRef.get()).data();
+        console.log(data);
+        alert("Created");
       } catch (error) {
         alert(error);
       }
     },
 
-  async googleLogin(){
-}
+    async googleLogin() {},
   },
 };
 </script>

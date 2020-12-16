@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Form from '../views/Form.vue'
+import Profile from '../views/Profile.vue'
 // import { About } from '../views/about'
 
 Vue.use(VueRouter)
@@ -16,16 +17,19 @@ const routes: Array<RouteConfig> = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: About
   },
   {
     path: '/form',
     name: 'Form',
     component: Form
+  }, {
+    path: '/profile/:uid',
+    props: (route) => ({ uid: JSON.stringify(route.query.uid) }),
+    component: Profile,
+    name: 'Profile'
   },
+
 ]
 
 const router = new VueRouter({
