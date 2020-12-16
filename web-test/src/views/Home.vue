@@ -3,8 +3,9 @@
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
     <div class="row">
-      <div class="col-lg-8"></div>
-      <div class="col-lg-4">
+      <div class="col-lg-9">
+      </div>
+      <div class="col-lg-3">
         <div id="logreg-forms">
           <form class="form-signin">
             <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">
@@ -51,7 +52,8 @@
               class="btn btn-primary btn-block"
               type="button"
               id="btn-signup"
-              data-toggle="modal" data-target="#myModalHorizontal"
+              data-toggle="modal"
+              data-target="#myModalHorizontal"
             >
               <i class="fas fa-user-plus"></i> Sign up New Account
             </button>

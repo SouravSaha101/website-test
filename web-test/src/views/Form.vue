@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="">
     <div class="notification is-success" v-if="state === 'synced'">
       Form is synced with Firestore
     </div>
