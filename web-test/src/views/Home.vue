@@ -195,6 +195,13 @@ export default {
         phoneno: null,
         uid: "",
       },
+      googleLoginData: {
+        email: "",
+        name: "",
+        photoURL: "",
+        uid: "",
+        phoneno: "",
+      },
       signUpPassword: "",
       confirmPassword: "",
       showSignupModal: false,
@@ -218,7 +225,6 @@ export default {
     },
 
     async signUp() {
-
       this.showSignupModal = false;
       if (this.signUpPassword !== this.confirmPassword) {
         alert("Passwords don't match");
@@ -261,21 +267,42 @@ export default {
       }
     },
 
-    googleLogin() {
+    async googleLogin() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          let uid = firebase.auth().currentUser.uid;
-          this.$router.push({
-            path: "/profile/:uid",
-            query: { uid: JSON.stringify(uid) },
-          });
-        })
-        .catch((err) => {
-          alert(err.message);
+      try {
+        firebase.auth().signInWithPopup(provider);
+        let uid = firebase.auth().currentUser.uid;
+          this.googleLoginData.uid = uid;
+          this.googleLoginData.email = firebase.auth().currentUser.providerData[0].email;
+          this.googleLoginData.name = firebase.auth().currentUser.providerData[0].displayName;
+          this.googleLoginData.photoURL = firebase.auth().currentUser
+            .providerData[0].photoURL
+            ? firebase.auth().currentUser.providerData[0].photoURL
+            : "Not Present";
+          this.googleLoginData.phoneno = firebase.auth().currentUser
+            .providerData[0].phoneno
+            ? firebase.auth().currentUser.providerData[0].phoneno
+            : "Not Present";
+          console.log(this.googleLoginData);
+          let documentPath =
+            "login-details/" + this.googleLoginData.uid.toString();
+          console.log(documentPath);
+          const docRef = db.doc(documentPath);
+
+          console.log(docRef);
+          let data = (await docRef.get()).data();
+          if (!data) {
+            docRef.set(this.googleLoginData);
+          } else {
+            alert("User Logged in before");
+          }
+        this.$router.push({
+          path: "/profile/:uid",
+          query: { uid: JSON.stringify(uid) },
         });
+      } catch (error) {
+        alert(error);
+      }
     },
   },
 };
