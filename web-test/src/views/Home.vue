@@ -8,20 +8,11 @@
         <div id="logreg-forms">
           <form class="form-signin">
             <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">
-              Sign in
+              Sign In with Google
             </h1>
-            <div class="social-login">
-              <button
-                class="btn google-btn social-btn"
-                type="button"
-                @click="googleLogin"
-              >
-                <span
-                  ><i class="fab fa-google-plus-g"></i> Sign in with
-                  Google</span
-                >
-              </button>
-            </div>
+            <button @click="googleLogin" class="social-button">
+              <img alt="Google Logo" src="../assets/google-logo.png" />
+            </button>
             <p style="text-align: center">OR</p>
             <input
               type="email"
@@ -101,6 +92,45 @@
                 <div class="modal-body">
                   <p style="text-align: center"></p>
                   <input
+                    type="input"
+                    id="inputName"
+                    class="form-control"
+                    placeholder="Name"
+                    required=""
+                    autofocus=""
+                    v-model="signUpData.name"
+                  />
+                  <input
+                    type="number"
+                    id="inputPhone"
+                    class="form-control"
+                    placeholder="Phone Number"
+                    required=""
+                    autofocus=""
+                    v-model="signUpData.phoneno"
+                  />
+                  <!-- <mdb-form-inline> -->
+                  Are You in India:
+                  <br />
+                  <input
+                    type="radio"
+                    id="Yes"
+                    value="true"
+                    v-model="signUpData.isIndian"
+                  />
+                  <label for="Yes">Yes</label>
+                  <br />
+                  <input
+                    type="radio"
+                    id="two"
+                    value="false"
+                    v-model="signUpData.isIndian"
+                  />
+                  <label for="No">No</label>
+                  <br />
+                  Enter date of birth:
+                  <datepicker v-model="signUpData.age"></datepicker>
+                  <input
                     type="email"
                     id="inputEmail"
                     class="form-control"
@@ -115,7 +145,7 @@
                     class="form-control"
                     placeholder="Password"
                     required=""
-                    v-model="signUpData.signUpPassword"
+                    v-model="signUpPassword"
                   />
                   <input
                     type="password"
@@ -123,7 +153,7 @@
                     class="form-control"
                     placeholder="Confirm Password"
                     required=""
-                    v-model="signUpData.confirmPassword"
+                    v-model="confirmPassword"
                   />
 
                   <button
@@ -147,28 +177,31 @@
 import { Component, Vue } from "vue-property-decorator";
 import firebase from "firebase";
 import { db } from "./../firebase";
+import Datepicker from "vuejs-datepicker";
 
 export default {
+  components: {
+    datepicker: Datepicker,
+  },
   data() {
     return {
       email: "",
       password: "",
       signUpData: {
         email: "",
-        signUpPassword: "",
-        confirmPassword: "",
         name: "",
-        age: "",
+        age: null,
         isIndian: true,
         phoneno: null,
         uid: "",
       },
+      signUpPassword: "",
+      confirmPassword: "",
       showSignupModal: false,
     };
   },
   methods: {
     async login() {
-      console.log("Logon");
       try {
         await firebase
           .auth()
@@ -185,11 +218,24 @@ export default {
     },
 
     async signUp() {
-      console.log("Sign Up");
+
       this.showSignupModal = false;
-      console.log(this.signUpData);
-      if (this.signUpData.signUpPassword !== this.signUpData.confirmPassword) {
+      if (this.signUpPassword !== this.confirmPassword) {
         alert("Passwords don't match");
+        return;
+      }
+      this.signUpData.age =
+        new Date().getFullYear() - new Date(this.signUpData.age).getFullYear();
+      if (
+        !this.signUpData &&
+        !this.signUpData.name &&
+        !this.signUpData.age &&
+        !this.signUpData.email &&
+        !this.signUpData.phoneno &&
+        !this.signUpData.email &&
+        this.signUpPassword
+      ) {
+        alert("Enter All Fields");
         return;
       }
       try {
@@ -197,20 +243,40 @@ export default {
           .auth()
           .createUserWithEmailAndPassword(
             this.signUpData.email,
-            this.signUpData.signUpPassword
+            this.signUpPassword
           );
         this.showSignupModal = false;
-        let documentPath = "login-details/" + this.uid.toString();
+        this.signUpData.uid = firebase.auth().currentUser.uid;
+        let documentPath = "login-details/" + this.signUpData.uid.toString();
         const docRef = db.doc(documentPath);
         let data = (await docRef.get()).data();
-        console.log(data);
+        if (!data) {
+          docRef.set(this.signUpData);
+        } else {
+          alert("Data Exist");
+        }
         alert("Created");
       } catch (error) {
         alert(error);
       }
     },
 
-    async googleLogin() {},
+    googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          let uid = firebase.auth().currentUser.uid;
+          this.$router.push({
+            path: "/profile/:uid",
+            query: { uid: JSON.stringify(uid) },
+          });
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    },
   },
 };
 </script>
