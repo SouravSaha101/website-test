@@ -3,8 +3,7 @@
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
     <div class="row">
-      <div class="col-lg-9">
-      </div>
+      <div class="col-lg-9"></div>
       <div class="col-lg-3">
         <div id="logreg-forms">
           <form class="form-signin">
@@ -12,7 +11,7 @@
               Sign in
             </h1>
             <div class="social-login">
-              <button class="btn google-btn social-btn" type="button">
+              <button class="btn google-btn social-btn" type="button" @click="googleLogin">
                 <span
                   ><i class="fab fa-google-plus-g"></i> Sign in with
                   Google</span
@@ -52,8 +51,7 @@
               class="btn btn-primary btn-block"
               type="button"
               id="btn-signup"
-              data-toggle="modal"
-              data-target="#myModalHorizontal"
+              @click="showSignupModal = true"
             >
               <i class="fas fa-user-plus"></i> Sign up New Account
             </button>
@@ -80,6 +78,64 @@
         </div>
       </div>
     </div>
+    <div v-if="showSignupModal">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Sign Up</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    @click="showSignupModal = false"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p style="text-align: center"></p>
+                  <input
+                    type="email"
+                    id="inputEmail"
+                    class="form-control"
+                    placeholder="Email address"
+                    required=""
+                    autofocus=""
+                    v-model="signUpEmail"
+                  />
+                  <input
+                    type="password"
+                    id="inputPassword"
+                    class="form-control"
+                    placeholder="Password"
+                    required=""
+                    v-model="signUpPassword"
+                  />
+                  <input
+                    type="password"
+                    id="inputPassword"
+                    class="form-control"
+                    placeholder="Confirm Password"
+                    required=""
+                    v-model="confirmPassword"
+                  />
+
+                  <button
+                    class="btn btn-success btn-block"
+                    type="submit"
+                    @click="signUp"
+                  >
+                    <i class="fas fa-sign-in-alt"></i> Sign in
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -92,6 +148,10 @@ export default {
     return {
       email: "",
       password: "",
+      signUpEmail: "",
+      signUpPassword: "",
+      confirmPassword: "",
+      showSignupModal: false,
     };
   },
   methods: {
@@ -102,10 +162,37 @@ export default {
           .auth()
           .signInWithEmailAndPassword(this.email, this.password);
         alert("success");
+                // this.$router.push({
+                //     path: '/settlement-data-cases/:isSavedSearchRequired'
+                // });
       } catch (error) {
         alert(error);
       }
     },
+
+    async signUp() {
+      console.log("Sign Up");
+      this.showSignupModal = false;
+      if (this.signUpPassword !== this.confirmPassword) {
+        alert("Passwords don't match");
+        return;
+      }
+      try {
+        await firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            this.signUpEmail,
+            this.signUpPassword
+          );
+        this.showSignupModal = false;
+        alert("Created")
+      } catch (error) {
+        alert(error);
+      }
+    },
+
+  async googleLogin(){
+}
   },
 };
 </script>

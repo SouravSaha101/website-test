@@ -387,10 +387,10 @@ h4,
 h5,
 h6 {
     margin-bottom: .5rem;
-    font-family: inherit;
+    font-family: systemui;
     font-weight: 500;
     line-height: 1.2;
-    color: inherit
+    color: yellowgreen
 }
 
 .h1,
@@ -5801,7 +5801,22 @@ button.close {
     overflow-x: hidden;
     overflow-y: auto
 }
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: table;
+    transition: opacity .3s ease;
+}
 
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
 .modal {
     position: fixed;
     top: 0;
