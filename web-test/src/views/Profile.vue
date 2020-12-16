@@ -74,12 +74,6 @@ export default {
     let data = (await docRef.get()).data();
     this.userData = data ? data : {};
     if (this.isGoogleUser) {
-      this.userData.name = firebase.auth().currentUser.providerData[0].displayName;
-      this.userData.email = firebase.auth().currentUser.providerData[0].email;
-      this.userData.phoneno = firebase.auth().currentUser.providerData[0]
-        .phoneno
-        ? firebase.auth().currentUser.providerData[0].phoneno
-        : "Not Present";
       this.userData.photoID = firebase.auth().currentUser.providerData[0]
         .photoURL
         ? firebase.auth().currentUser.providerData[0].photoURL
