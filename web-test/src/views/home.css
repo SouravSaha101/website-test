@@ -126,7 +126,7 @@
 /* COLOR BACKGROUND */
 
 .home {
-    height: 90%;
+        min-height: 45%;
 }
 
 .social-button {

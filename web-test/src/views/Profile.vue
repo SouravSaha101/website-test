@@ -14,7 +14,7 @@
     <div v-if="isGoogleUser">
       <h1>
         Google User
-        <img alt="Profile Pic" :src="googleLoginData.photoID" />
+        <img alt="Profile Pic" :src="googleLoginData.photoURL" />
       </h1>
       <h1>Welcome - {{ googleLoginData.name }}</h1>
       <h1>Email - {{ googleLoginData.email }}</h1>
@@ -64,6 +64,7 @@ export default {
   },
 
   created: async function () {
+console.log("4")
     this.uid = firebase.auth().currentUser.uid;
     const uidRoute = JSON.parse(this.$route.query.uid);
 
@@ -79,7 +80,7 @@ export default {
     }
 
     if (this.isGoogleUser) {
-      this.googleLoginData.photoID = firebase.auth().currentUser.providerData[0]
+      this.googleLoginData.photoURL = firebase.auth().currentUser.providerData[0]
         .photoURL
         ? firebase.auth().currentUser.providerData[0].photoURL
         : "Not Present";

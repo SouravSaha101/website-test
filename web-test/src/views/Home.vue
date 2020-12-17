@@ -203,17 +203,21 @@ export default {
   },
   methods: {
     async login() {
+      console.log("2");
       try {
         await firebase
           .auth()
           .signInWithEmailAndPassword(this.email, this.password);
         let uid = firebase.auth().currentUser.uid;
+        console.log("3");
         alert("success");
         this.$router.push({
           path: "/profile/:uid",
           query: { uid: JSON.stringify(uid) },
         });
+console.log("6")
       } catch (error) {
+console.log("5")
         alert(error);
       }
     },
@@ -270,11 +274,15 @@ export default {
           path: "/profile/:uid",
           query: { uid: JSON.stringify(uid) },
         });
-alert("GOs")
+        alert("GOs");
       } catch (error) {
         alert(error);
       }
     },
+  },
+  created() {
+    console.log("1");
+
   },
 };
 </script>

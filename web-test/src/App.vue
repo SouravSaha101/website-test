@@ -12,11 +12,12 @@
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
+@click="isClicked = !isClicked"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-collapse" id="navbarSupportedContent" :class="isClicked ? 'collapse show' : 'collapse'">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
               <router-link to="/">
@@ -104,7 +105,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 export default {
   data() {
-    return {};
+    return {
+isClicked: false
+};
   },
   methods: {
     toggle() {},
