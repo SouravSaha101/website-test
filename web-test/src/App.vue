@@ -3,7 +3,10 @@
     <div id="nav" class="">
       <!-- Navigation -->
       <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Welcome</a>
+        <a class="navbar-brand" href="#">
+<img alt="Chill Admi" src="../src/assets/logo-home-2.png" style="
+    height: 93px;"/>
+</a>
         <button
           class="navbar-toggler"
           type="button"
