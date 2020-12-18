@@ -1,5 +1,6 @@
 # website-test
 Test For a website
+Website opens a login page, user can either sign up or sign in with google.
 
 Run "npm install" to install the node modules
 
